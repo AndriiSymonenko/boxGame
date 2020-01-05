@@ -4,21 +4,31 @@ let $time = document.querySelector("#time");
 let $timeHeader = document.querySelector("#time-header");
 let $resultHeader = document.querySelector("#result-header");
 let $result = document.querySelector("#result");
-
+let $gameTime = document.querySelector("#game-time");
 let score = 0;
+
+let colors = ["red", "blue", "yellow", "pink"];
 
 let isGameStarted = false;
 $start.addEventListener("click", startGame);
 $game.addEventListener("click", boxClick);
+$gameTime.addEventListener("input", setTimeGame);
 
-function startGame() {
+function showElem($elem) {
+  $elem.classList.remove("hide");
+}
+
+function hideElem($elem) {
+  $elem.classList.add("hide");
+}
+
+function startGame($elem) {
   score = 0;
-  $timeHeader.classList.remove("hide");
-  $resultHeader.classList.add("hide");
+  $gameTime.setAttribute("disabled", "true");
   setTimeGame();
   isGameStarted = true;
   $game.style.backgroundColor = "#fff";
-  $start.classList.add("hide");
+  hideElem($start);
 
   let interval = setInterval(function() {
     // таймер
@@ -40,18 +50,21 @@ function getScore() {
 }
 
 function setTimeGame() {
-  let time = 5;
+  let time = +$gameTime.value;
   $time.textContent = time.toFixed(1);
+  showElem($timeHeader);
+  hideElem($resultHeader);
 }
 
 function endGame() {
   isGameStarted = false;
   getScore();
-  $start.classList.remove("hide");
+  $gameTime.removeAttribute("disabled");
+  showElem($start);
   $game.style.backgroundColor = "#ccc";
   $game.innerHTML = "";
-  $timeHeader.classList.add("hide");
-  $resultHeader.classList.remove("hide");
+  hideElem($timeHeader);
+  showElem($resultHeader);
 }
 
 function boxClick(event) {
@@ -74,7 +87,8 @@ function renderBox() {
   $game.innerHTML = "";
   box.style.height = box.style.width = boxSize + "px";
   box.style.position = "absolute";
-  box.style.backgroundColor = "#000";
+  let randomColor = getRandom(0, colors.length);
+  box.style.backgroundColor = colors[randomColor];
   box.style.top = getRandom(0, maxTop) + "px";
   box.style.left = getRandom(0, maxLeft) + "px";
   box.style.cursor = "pointer";
