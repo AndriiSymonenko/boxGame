@@ -30,7 +30,7 @@ function startGame($elem) {
   $game.style.backgroundColor = "#fff";
   hideElem($start);
 
-  let interval = setInterval(function() {
+  let interval = setInterval(function () {
     // таймер
     let time = parseFloat($time.textContent); // Позволяет задавать или получать текстовое содержимое элемента и его потомков.
 
@@ -87,8 +87,7 @@ function renderBox() {
   $game.innerHTML = "";
   box.style.height = box.style.width = boxSize + "px";
   box.style.position = "absolute";
-  let randomColor = getRandom(0, colors.length);
-  box.style.backgroundColor = colors[randomColor];
+  box.style.backgroundColor = getColorRgb();
   box.style.top = getRandom(0, maxTop) + "px";
   box.style.left = getRandom(0, maxLeft) + "px";
   box.style.cursor = "pointer";
@@ -98,4 +97,14 @@ function renderBox() {
 
 function getRandom(min, max) {
   return Math.floor(Math.random() * (max - min) + min);
+}
+
+
+function getColorRgb() {
+  let color = [];
+  for (i = 0; i <= 2; i++) {
+    color.push(Math.floor(Math.random() * (255 - 0) + 0));
+  }
+  let colorRGB = ("rgb" + "(" + color.join(",") + ")");
+  return colorRGB;
 }
